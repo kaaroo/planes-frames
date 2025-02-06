@@ -1,2 +1,5 @@
-.idea/*
-*/__pychache__/*
+.idea/
+app/__pycache__/*
+app/main_playground.py
+.env
+.database
