@@ -1,12 +1,10 @@
-# Set up the scheduler
 from contextlib import asynccontextmanager
-from http import HTTPStatus
 from typing import List
 
 import uvicorn
-from apscheduler.schedulers.background import BackgroundScheduler  # runs tasks in the background
-from apscheduler.triggers.interval import IntervalTrigger  # <-- CHANGED IMPORT
-from fastapi import FastAPI, Response
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
+from fastapi import FastAPI
 
 from app.schemas import PlaneDataFrame
 from app.tasks import FramesGenerator
@@ -32,7 +30,7 @@ app = FastAPI()
 
 # Handle scheduler shut down
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan():
     yield
     scheduler.shutdown()
 
@@ -42,11 +40,12 @@ async def root():
 
 @app.get("/planes", response_model=List[PlaneDataFrame])
 async def get_latest_planes_positions():
+    # TODO fetch from db
     return data
 
 @app.get("/planeHistory/{icao}", response_model=List[PlaneDataFrame])
 def get_plane_history(plane_icao: str):
-    # TODO
+    # TODO fetch from db
     raise NotImplemented()
 
 if __name__ == "__main__":
