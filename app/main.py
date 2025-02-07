@@ -49,14 +49,14 @@ async def root():
 
 @app.get("/planes", response_model=List[PlaneDataFrame])
 async def get_latest_planes_positions():
-    frames: List[PlaneFrameModel] = await Database.get_last_positions(list(fg.planes_ids))
+    frames: List[PlaneFrameModel] = await Database.get_last_planes_positions(list(fg.planes_ids))
 
     return map_dataframes(frames)
 
 
 @app.get("/planeHistory", response_model=List[PlaneDataFrame])
 async def get_plane_history(icao: str):
-    frames: List[PlaneFrameModel] = await Database.get_planes_frames(icao)
+    frames: List[PlaneFrameModel] = await Database.get_frames_for_plane(icao)
 
     return map_dataframes(frames)
 

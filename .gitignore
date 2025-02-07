@@ -1,11 +1,10 @@
 __pycache__/
-app/__pycache__/*
+app/__pycache__/
 app/data_generators/__pycache__/
 
 .env
 
 .database
 
-app/main_playground.py
 .idea/
 

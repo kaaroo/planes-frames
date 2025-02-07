@@ -228,17 +228,6 @@ all = ["email-validator (>=2.0.0)", "fastapi-cli[standard] (>=0.0.5)", "httpx (>
 standard = ["email-validator (>=2.0.0)", "fastapi-cli[standard] (>=0.0.5)", "httpx (>=0.23.0)", "jinja2 (>=3.1.5)", "python-multipart (>=0.0.18)", "uvicorn[standard] (>=0.12.0)"]
 
 [[package]]
-name = "getter"
-version = "0.0.0.dev0"
-description = "Under Development"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "getter-0.0.0.dev0.tar.gz", hash = "sha256:fcc980c6f7e1569f02ef28f627076aea12ebbeb7c46f443ae5d51e77baf3eb6e"},
-]
-
-[[package]]
 name = "h11"
 version = "0.14.0"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
@@ -573,4 +562,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.6.3)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "04bc25769170cdd27c2a1cb26f9433d99b7dbe16e3f1410c0815f921ce72266f"
+content-hash = "c172e2a14e53ebb58b2fecb18a8ef8e659fceebaef89d510a089a1b38cc378e1"
