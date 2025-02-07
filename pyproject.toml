@@ -10,8 +10,8 @@ requires-python = "^3.10"
 dependencies = [
     "fastapi (>=0.115.8,<0.116.0)",
     "uvicorn (>=0.34.0,<0.35.0)",
-    "apscheduler (>=3.11.0,<4.0.0)",
-    "tortoise-orm (>=0.24.0,<0.25.0)",
+    "tortoise-orm[asyncpg] (>=0.24.0,<0.25.0)",
+    "getter (==0.0.0.*)",
 ]
 
 

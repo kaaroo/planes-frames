@@ -1,5 +1,11 @@
-.idea/
+__pycache__/
 app/__pycache__/*
-app/main_playground.py
+app/frames_generators/__pycache__/
+
 .env
+
 .database
+
+app/main_playground.py
+.idea/
+

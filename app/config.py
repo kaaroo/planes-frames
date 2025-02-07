@@ -10,3 +10,8 @@ MAX_LATITUDE = 90
 
 MAX_ALT_METERS = 40000
 MIN_ALT_METERS = 0
+
+# TODO set those from env
+POSTGRES_USER = "postgres"
+POSTGRES_PASSWORD = "postgres"
+POSTGRES_DB_NAME = "postgres"

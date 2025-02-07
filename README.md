@@ -9,7 +9,7 @@ Planes app desc
 ```uvicorn app.main:app --reload```
 
 2) Start PostgreSQL with the docker compose
-```docker-compose up```
+```docker-compose up -d```
 
 # TODO tests & how to run them
 # TODO autoformatting
