@@ -1,19 +1,13 @@
-import asyncio
-from datetime import datetime, timezone
-from shutil import get_terminal_size
 from typing import Dict
 
-
-
+from app.data_generators.single_frame_generator import FrameGenerator
+from app.data_generators.utils import get_planes_ids
 from app.models import Plane as PlaneModel
 from app.models import PlaneFrame as PlaneFrameModel
-from app.frames_generators.single_frame_generator import FrameGenerator
 from app.schemas import PlaneDataFrame
-from app.frames_generators.utils import get_planes_ids
 
 
 class FramesGenerator:
-    INTERVAL_S = 10
 
     def __init__(self):
         self.__planes_ids = set()
@@ -33,10 +27,8 @@ class FramesGenerator:
             await PlaneModel.get_or_create(icao=plane_icao)
 
     async def run_frames_generation(self):
-        await asyncio.sleep(self.INTERVAL_S)
-
         if len(self.__planes_ids) == 0:
-            raise ValueError('List of planes should not be empty!')
+            raise ValueError('Generating frames error: planes (icaos) should exist at this point')
 
         for plane_id in self.__planes_ids:
             await self._create_plane_frame_data(plane_id)

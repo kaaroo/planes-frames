@@ -8,4 +8,3 @@ def validate_icao(value: str) -> None:
         raise ValidationError("Value (icao) can have only uppercase letters")
     if len(value) != 4:
         raise ValidationError("Value (icao) must be of length 4")
-

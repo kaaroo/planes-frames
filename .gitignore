@@ -1,6 +1,6 @@
 __pycache__/
 app/__pycache__/*
-app/frames_generators/__pycache__/
+app/data_generators/__pycache__/
 
 .env
 

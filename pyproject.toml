@@ -12,6 +12,8 @@ dependencies = [
     "uvicorn (>=0.34.0,<0.35.0)",
     "tortoise-orm[asyncpg] (>=0.24.0,<0.25.0)",
     "getter (==0.0.0.*)",
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "apscheduler (>=3.11.0,<4.0.0)",
 ]
 
 

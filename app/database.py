@@ -1,7 +1,7 @@
 from typing import List
 
-from app.config import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB_NAME
 from app.models import PlaneFrame as PlaneFrameModel
+from app.settings import POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB_NAME
 
 
 class Database:
@@ -9,8 +9,18 @@ class Database:
 
     @staticmethod
     async def get_last_positions(planes_icaos: List[str]) -> List[PlaneFrameModel]:
-        return await PlaneFrameModel.filter(plane_id__in=planes_icaos).order_by('timestamp').limit(len(planes_icaos))
+        frames = await PlaneFrameModel.filter(plane_id__in=planes_icaos).order_by('-timestamp').limit(len(planes_icaos))
+
+        frames_icaos_set = set([frame.plane_id for frame in frames])
+        planes_icaos_set = set(planes_icaos)
+
+        if not frames_icaos_set == planes_icaos_set:
+            raise ValueError(
+                f"""Unexpected frames results: set of icaos ({str(frames_icaos_set)}) of reset frames 
+                is not the same as an input {str(planes_icaos_set)}""")
+
+        return frames
 
     @staticmethod
     async def get_planes_frames(plane_icao: str, number_of_frames: int = 50) -> List[PlaneFrameModel]:
-        return await PlaneFrameModel.filter(plane_id=plane_icao).order_by('timestamp').limit(number_of_frames)
+        return await PlaneFrameModel.filter(plane_id=plane_icao).order_by('-timestamp').limit(number_of_frames)

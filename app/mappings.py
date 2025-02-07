@@ -3,6 +3,7 @@ from typing import List
 from app.models import PlaneFrame as PlaneFrameModel
 from app.schemas import PlaneDataFrame
 
+
 def map_dataframe(frame: PlaneFrameModel) -> PlaneDataFrame:
     return PlaneDataFrame(
         icao=frame.plane_id,
@@ -13,5 +14,6 @@ def map_dataframe(frame: PlaneFrameModel) -> PlaneDataFrame:
         timestamp=frame.timestamp
     )
 
-def map_dataframes(frames: List[PlaneFrameModel] ) -> List[PlaneDataFrame]:
+
+def map_dataframes(frames: List[PlaneFrameModel]) -> List[PlaneDataFrame]:
     return [map_dataframe(frame) for frame in frames]
