@@ -2,9 +2,8 @@ from typing import Dict
 
 from app.data_generators.single_frame_generator import SingleFrameGenerator
 from app.data_generators.utils import generate_plane_ids
-from app.models import Plane as PlaneModel
-from app.models import PlaneFrame as PlaneFrameModel
-from app.schemas import PlaneDataFrame
+from app.database import plane_repository
+from app.models import Plane
 
 
 class MultipleFramesGenerator:
@@ -26,7 +25,7 @@ class MultipleFramesGenerator:
         }
 
         for plane_icao in self.__planes_ids:
-            await PlaneModel.get_or_create(icao=plane_icao)
+            await plane_repository.get_or_create_plane(Plane(icao=plane_icao))
 
     async def run_frames_generation(self):
         if len(self.__planes_ids) == 0:
@@ -36,16 +35,5 @@ class MultipleFramesGenerator:
             await self._create_plane_frame_data(plane_id)
 
     async def _create_plane_frame_data(self, plane_frame_icao: str):
-        plane = await PlaneModel.get(icao=plane_frame_icao)
-
-        plane_data_frame: PlaneDataFrame = self.__planes_generators[plane_frame_icao].generate_random_plane_frame()
-
-        plane_data_frame: PlaneFrameModel = PlaneFrameModel(
-            plane=plane,
-            speed=plane_data_frame.speed,
-            lon=plane_data_frame.lon,
-            lat=plane_data_frame.lat,
-            alt=plane_data_frame.alt,
-            timestamp=plane_data_frame.timestamp
-        )
-        await plane_data_frame.save()
+        frame = self.__planes_generators[plane_frame_icao].generate_random_plane_frame()
+        await plane_repository.save_plane_data_frame(frame)

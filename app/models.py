@@ -1,36 +1,32 @@
-from tortoise import fields, models
+import re
+from datetime import datetime
 
-from app.settings import MIN_SPEED_KM_H, MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE, MIN_ALT_METERS
-from app.validator import validate_icao
+from pydantic import BaseModel, field_validator, Field
+from pydantic_core import ValidationError
 
-
-class Plane(models.Model):
-    """
-    The Plane model
-    """
-    icao = fields.CharField(primary_key=True, max_length=4, validators=[validate_icao])
-
-    def __str__(self) -> str:
-        return f"<{self.__class__.__name__}>" + str({
-            "icao": self.icao,
-        })
+from app.settings import MAX_SPEED_KM_H, MIN_SPEED_KM_H, MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE
 
 
-class PlaneFrame(models.Model):
-    """
-    The PlaneFrame model
-    """
-    id = fields.IntField(primary_key=True)
-    plane = fields.ForeignKeyField("models.Plane", related_name="frames")
-    speed = fields.FloatField(min=MIN_SPEED_KM_H)
-    lon = fields.FloatField(min=MIN_LONGITUDE, max=MAX_LONGITUDE)
-    lat = fields.FloatField(min=MIN_LATITUDE, max=MAX_LATITUDE)
-    alt = fields.IntField(min=MIN_ALT_METERS)
-    timestamp = fields.DatetimeField()
+class Plane(BaseModel):
+    icao: str
 
-    def __str__(self) -> str:
-        return f"<{self.__class__.__name__}>" + str({
-            "id": id,
-            "icao": self.plane_id,
-            "timestamp": self.timestamp,
-        })
+
+class PlaneDataFrame(BaseModel):
+    icao: str
+    speed: float = Field(None, ge=MIN_SPEED_KM_H, le=MAX_SPEED_KM_H)
+    lon: float = Field(None, ge=MIN_LONGITUDE, le=MAX_LONGITUDE)
+    lat: float = Field(None, ge=MIN_LATITUDE, le=MAX_LATITUDE)
+    alt: int = Field(None, ge=0)
+    timestamp: datetime
+
+    @field_validator("icao")
+    def icao_match(cls, v: str) -> str:
+        validate_icao(v)
+        return v
+
+
+def validate_icao(value: str) -> None:
+    if re.match(r':[A-Z]+$', value):
+        raise ValidationError("Value (icao) can have only uppercase letters")
+    if len(value) != 4:
+        raise ValidationError("Value (icao) must be of length 4")

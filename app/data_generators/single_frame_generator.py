@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from app.settings import MAX_SPEED_KM_H, MIN_SPEED_KM_H, MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE, \
     MAX_ALT_METERS, MIN_ALT_METERS
-from app.schemas import PlaneDataFrame
+from app.models import PlaneDataFrame
 
 random.seed(0)
 
