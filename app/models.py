@@ -1,7 +1,6 @@
 from tortoise import fields, models
 
-from app.config import MIN_SPEED_KM_H, MIN_LONGITUDE, MAX_LONGITUDE, MAX_LATITUDE, MIN_LATITUDE, \
-    MIN_ALT_METERS
+from app.settings import MIN_SPEED_KM_H, MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE, MIN_ALT_METERS
 from app.validator import validate_icao
 
 

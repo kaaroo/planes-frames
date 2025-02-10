@@ -1,41 +1,48 @@
+import logging
 from contextlib import asynccontextmanager
+from logging import StreamHandler
 from typing import List
 
 import uvicorn
 from fastapi import FastAPI
 
-from app.config import SCHEDULERS_INTERVAL_S
-from app.data_generators.multiple_frames_generator import FramesGenerator
+from app.settings import SCHEDULERS_INTERVAL_S
+from app.data_generators.multiple_frames_generator import MultipleFramesGenerator
 from app.database import Database
 from app.db_init import db_setup
 from app.mappings import map_dataframes
 from app.models import PlaneFrame as PlaneFrameModel
 from app.schemas import PlaneDataFrame
 
-fg = FramesGenerator()
+fg = MultipleFramesGenerator()
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler())
+
+
 @asynccontextmanager
 async def lifespan(application: FastAPI):
-    print("Application is starting up...")
+    logger.info("Application is starting up...")
     await db_setup(application)
-    print("Database models set up.")
+    logger.info("Database models set up.")
 
     await fg.create_planes()
-    print("Planes instances created.")
+    logger.info("Planes instances created.")
 
-    print('Setting up scheduler...')
+    logger.info('Setting up scheduler...')
     scheduler = AsyncIOScheduler()
     scheduler.add_job(fg.run_frames_generation, trigger=IntervalTrigger(seconds=SCHEDULERS_INTERVAL_S))
     scheduler.start()
 
-    print("Finished app's startup.")
+    logger.info("Finished app's startup.")
 
     yield
-    print("Application shutdown...")
+    logger.info("Application shutdown...")
     scheduler.shutdown()
 
 
@@ -62,4 +69,4 @@ async def get_plane_history(icao: str):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
