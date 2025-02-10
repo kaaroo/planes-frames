@@ -5,17 +5,20 @@ Scheduler is responsible for generating new dataframe every 1 second.
 
 Read more about ADS-B data: https://dlapilota.pl/wiadomosci/dlapilota/ads-b-automatic-dependent-surveillance-broadcast
 
+# Prerequisites
+* Python 3.10+
+* Poetry
+* Docker
+* docker-compose
 
-# The development mode:
-0) Build docker image:
+# The development mode
+1) Build a Docker image with the application:
 ```docker build -t plane-frames-gen-app .```
 
-1) Start the FastAPI app with the command:
-```uvicorn app.main:app --reload --env-file .env```
-
-2) Start PostgreSQL with the docker compose
+2) Start the application and Postgres with the docker-compose:
 ```docker-compose up -d```
 
-# TODO tests & how to run them
-# TODO autoformatting
+3) Open: http://localhost:8000/docs to see the OpenAPI documentation.
 
+# Run tests
+```poetry run pytest .```
