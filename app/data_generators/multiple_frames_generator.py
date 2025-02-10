@@ -15,7 +15,7 @@ class MultipleFramesGenerator:
         self.__planes_generators = {}
 
     @property
-    def planes_ids(self):
+    def planes_ids(self) -> set[str]:
         return self.__planes_ids
 
     async def create_planes(self):

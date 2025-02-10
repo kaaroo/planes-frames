@@ -2,7 +2,6 @@ import re
 from datetime import datetime
 
 from pydantic import BaseModel, field_validator, Field
-from pydantic_core import ValidationError
 
 from app.settings import MAX_SPEED_KM_H, MIN_SPEED_KM_H, MIN_LONGITUDE, MAX_LONGITUDE, MIN_LATITUDE, MAX_LATITUDE
 
@@ -26,7 +25,5 @@ class PlaneDataFrame(BaseModel):
 
 
 def validate_icao(value: str) -> None:
-    if re.match(r':[A-Z]+$', value):
-        raise ValidationError("Value (icao) can have only uppercase letters")
-    if len(value) != 4:
-        raise ValidationError("Value (icao) must be of length 4")
+    if not re.match(r'^[A-Z]{4}$', value):
+        raise ValueError("Value (icao) must contain only 4 uppercase letters")
